@@ -2,32 +2,59 @@ import { Overmind } from 'overmind';
 import { createHook } from 'overmind-react';
 import CoursePayload from './course-unit.json';
 
-const overmind = new Overmind({
-    state: {
-        ui: {
-            isLoadingCourse: false
-        },
-        course: CoursePayload,
-        tags: [{
-            label: 'some tag',
-            value: 'some-tag'
-        }],
-        courseTags: state => state.course && state.course.units.reduce((prev, current) => { 
-            const unitName = current.name;
-            return {
-                ...prev,
-                [current.tag]: {
-                    ...prev[current.tag],
-                    unitName
-                }
-            };
-        }, {})
+const state = {
+    ui: {
+        isLoadingCourse: false,
+        isLoadingJson: false,
+        showSaveJsonModal: false
     },
-    actions: {
-        createTag: ({ state, effects }, value) => {
-            state.tags.push({ label: value, value });
-        }
+    course: CoursePayload,
+    outputJson: null,
+    tags: [],
+    courseTags: state => state.course && state.course.units.reduce((prev, current) => { 
+        const unitName = current.name;
+        return {
+            ...prev,
+            [current.tag]: {
+                ...prev[current.tag],
+                unitName
+            }
+        };
+    }, {})
+}
+
+const actions = {
+    updateTag: ({ state }, { tags, unit }) => {
+        const tagValues = tags.map(t => t.id);
+
+        state.tags = [...tagValues];
+        
+        state.course.units = state.course.units.map(u => {
+            if(u.code !== unit.code) {
+                return u;
+            } else {
+                return { ...u, tags: [...state.tags]}
+            }
+        })
+    },
+    displaySaveModal: ({state}) => {
+        state.ui.showSaveJsonModal = true;
+        state.ui.isLoadingJson = true;
+        setTimeout(() => {
+            state.ui.outputJson = state.ui.course
+            state.ui.isLoadingJson = false;
+        }, 1000);
     }
+}
+
+const effects = {
+
+}
+
+const overmind = new Overmind({
+    state,
+    actions,
+    effects
 });
 
 export const useOvermind = createHook(overmind);

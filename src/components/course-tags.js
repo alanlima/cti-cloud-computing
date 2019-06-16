@@ -1,8 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import Select from 'react-select/creatable';
 import { useOvermind } from '../overmind';
 
 import { WithContext as ReactTags } from 'react-tag-input';
+
+import useWhyDidYouUpdate from '../hooks/useWhyDidYouUpdate';
 
 const KeyCodes = {
     comma: 188,
@@ -16,41 +18,43 @@ const initialState = {
     suggestions: []
 }
 
-const parseSelectedTagsOrNull = (tags) => tags && tags.map(text => ({id: text, text }))
+const parseSelectedTagsOrNull = (tags) => (tags && tags.map(text => ({id: text, text }))) || [];
 
-const CourseTags = ({ selectedTags, onTagsUpdated }) => {
-    const [ state, setState ] = useState({
-        ...initialState,
-        tags: parseSelectedTagsOrNull(selectedTags) || initialState.tags
-    });
+const CourseTags = (props) => {
+    useWhyDidYouUpdate('[course-tags]', props);
+    const { onTagsUpdated } = props;
+    const [ tags, setTags ] = useState(parseSelectedTagsOrNull(props.selectedTags));
+
+    useEffect(() => {
+        console.log('useEffect', {
+            tags, seTags: props.selectedTags
+        })
+        setTags(parseSelectedTagsOrNull(props.selectedTags))
+    }, [ setTags, props.selectedTags ] )
+
+    console.log('course-tags', { tags, props });
 
     const notifyTagsUpdated = useCallback((tags) => {
+        console.log('should notify with', { onTagsUpdated, tags });
         onTagsUpdated && onTagsUpdated(tags)
     }, [ onTagsUpdated] );
 
     const handleDelete = useCallback(index => {
-        const newTags = state.tags.filter((tag, i) => i !== index);
-        setState({
-            ...state,
-            tags: newTags
-        });
+        console.log('handle delete before', tags);
+        const newTags = tags.filter((tag, i) => i !== index);
+        console.log('handle delete after', newTags);
         notifyTagsUpdated(newTags);
-    }, [ state, setState, notifyTagsUpdated ]);
+    }, [ tags, notifyTagsUpdated ]);
 
     const handleAddition = useCallback(tag => {
-        const newTags = [...state.tags, tag]
-        setState({
-            ...state,
-            tags: newTags
-        });
+        const newTags = [...tags.filter(t => t.id !== tag.id), tag]
         notifyTagsUpdated(newTags);
-    }, [ state, setState, notifyTagsUpdated ]);
+    }, [ tags, notifyTagsUpdated ]);
 
     return (
         <div>
             <ReactTags 
-                tags={state.tags}
-                suggestions={state.suggestions}
+                tags={tags}
                 delimiters={delimiters}
                 handleDelete={handleDelete}
                 handleAddition={handleAddition} />
@@ -92,14 +96,19 @@ export const OvermindedCourseTags = ({ unit }) => {
 
     const stateUnit = state.course.units.filter(u => u.code === unit.code);
 
-    const handleTagSelected = useCallback(() => {
+    const handleTagSelected = useCallback((tags) => {
+        console.log('handle called...');
+        actions.updateTag({ unit, tags })
+    }, [ actions, unit ]);
 
-    });
+    console.log('overminded', {
+        state
+    })
 
     return <CourseTags
                 tags={state.tags}
-                selectedTags={stateUnit.tag ? [stateUnit.tag] : []}
-                onTagSelected={handleTagSelected}
+                selectedTags={stateUnit.tags ? [...stateUnit.tags] : []}
+                onTagsUpdated={handleTagSelected}
             />
 }
 
