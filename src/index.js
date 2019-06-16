@@ -4,7 +4,15 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { Provider as OvermindProvider } from 'overmind-react';
+import { overmind } from './overmind';
+
+
+ReactDOM.render(
+    <OvermindProvider value={overmind}>
+        <App />
+    </OvermindProvider>
+, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

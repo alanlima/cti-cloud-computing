@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "file-saver": "^2.0.2",
     "overmind": "^18.0.0",
     "overmind-react": "^19.0.0",
     "prop-types": "^15.7.2",
@@ -13,7 +14,8 @@
     "react-json-view": "^1.19.1",
     "react-scripts": "3.0.1",
     "react-select": "^3.0.4",
-    "react-tag-input": "^6.4.0"
+    "react-tag-input": "^6.4.0",
+    "semantic-ui-react": "^0.87.2"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -12,7 +12,7 @@ function App() {
           alt="CTI Logo" />
       </div>
       <div id="page-content">
-        <CoursePage />
+          <CoursePage />
       </div>
     </div>
   );

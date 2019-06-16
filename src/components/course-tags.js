@@ -54,40 +54,16 @@ const CourseTags = (props) => {
     return (
         <div>
             <ReactTags 
+                classNames={{
+                    tag: 'ui label',
+                    tagInput: 'ui input'
+                }}
                 tags={tags}
+                allowDragDrop={false}
                 delimiters={delimiters}
                 handleDelete={handleDelete}
                 handleAddition={handleAddition} />
         </div>
-    );
-}
-
-const CourseTags_old = ({ unit, selectedTags, tags, onTagSelected }) => {
-    const [ options, setOptions ] = useState([ ]);
-
-    const [ selectedOptions, setSelectedOptions ] = useState([ ]);
-
-    const handleOnChange = useCallback((newValue, actionMeta) => {
-        setSelectedOptions(opt => {
-            return newValue;
-        });
-    }, [setSelectedOptions]);
-
-    const handleOnCreate = useCallback(value => {
-        const newValue = { label: value, value};
-        setOptions(opt => [...opt, { label: value, value}])
-        setSelectedOptions(opt => [...opt, newValue]);
-        onTagSelected({
-            unit, tag: newValue
-        });
-    }, [ setOptions, onTagSelected, unit ]);
-
-    return (
-        <Select 
-            value={selectedTags}
-            onCreateOption={handleOnCreate}
-            onChange={handleOnChange}
-            options={tags} />
     );
 }
 

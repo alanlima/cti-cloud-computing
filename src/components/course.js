@@ -1,6 +1,8 @@
 import React from 'react';
 import CourseUnit from './course-unit';
 import { useOvermind } from '../overmind';
+import { Menu, Icon } from 'semantic-ui-react';
+import DownloadCourseModal from './download-course-modal';
 
 const Course = ({name, code, units}) => {
 
@@ -14,7 +16,24 @@ const Course = ({name, code, units}) => {
 
     return (
         <div>
-            <h1>{code} - {name}</h1>
+            <Menu>
+                <h2 style={{padding: '5px 20px'}}>{code} - {name}</h2>
+                <Menu.Menu position='right'>
+                    <Menu.Item>
+                        <Icon name='upload'></Icon>
+                        Upload JSON
+                    </Menu.Item>
+                    <DownloadCourseModal
+                        modalTrigger={(
+                            <Menu.Item>
+                                <Icon name="download"></Icon>
+                                Download JSON
+                            </Menu.Item>
+                        )}
+                    />
+                </Menu.Menu>
+            </Menu>
+
             {units.map(u => <CourseUnit
                 onTagsUpdated={handUpdate(u)}
                 tags={u.tags}

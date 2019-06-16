@@ -1,6 +1,7 @@
-import { Overmind } from 'overmind';
+import { createOvermind } from 'overmind';
 import { createHook } from 'overmind-react';
 import CoursePayload from './course-unit.json';
+import { unnormalizeCourseJson } from './utils';
 
 const state = {
     ui: {
@@ -41,7 +42,7 @@ const actions = {
         state.ui.showSaveJsonModal = true;
         state.ui.isLoadingJson = true;
         setTimeout(() => {
-            state.ui.outputJson = state.ui.course
+            state.outputJson = unnormalizeCourseJson(state.course);
             state.ui.isLoadingJson = false;
         }, 1000);
     }
@@ -51,10 +52,10 @@ const effects = {
 
 }
 
-const overmind = new Overmind({
+export const overmind = createOvermind({
     state,
     actions,
     effects
 });
 
-export const useOvermind = createHook(overmind);
+export const useOvermind = createHook();
