@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/cti-cloud-computing/static/css/main.02c0cb27.chunk.css",
+    "main.js": "/cti-cloud-computing/static/js/main.7b2388f8.chunk.js",
+    "main.js.map": "/cti-cloud-computing/static/js/main.7b2388f8.chunk.js.map",
+    "runtime~main.js": "/cti-cloud-computing/static/js/runtime~main.1f369ba4.js",
+    "runtime~main.js.map": "/cti-cloud-computing/static/js/runtime~main.1f369ba4.js.map",
+    "static/js/2.58f4b99d.chunk.js": "/cti-cloud-computing/static/js/2.58f4b99d.chunk.js",
+    "static/js/2.58f4b99d.chunk.js.map": "/cti-cloud-computing/static/js/2.58f4b99d.chunk.js.map",
+    "index.html": "/cti-cloud-computing/index.html",
+    "precache-manifest.f32ca5f278747b08fa4e1b45fcb7f19a.js": "/cti-cloud-computing/precache-manifest.f32ca5f278747b08fa4e1b45fcb7f19a.js",
+    "service-worker.js": "/cti-cloud-computing/service-worker.js",
+    "static/css/main.02c0cb27.chunk.css.map": "/cti-cloud-computing/static/css/main.02c0cb27.chunk.css.map"
+  }
+}
