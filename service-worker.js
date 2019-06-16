@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/cti-cloud-computing/precache-manifest.f32ca5f278747b08fa4e1b45fcb7f19a.js"
+  "/cti-cloud-computing/precache-manifest.95074bfbd84b2e4776cbb303b964ac11.js"
 );
 
 self.addEventListener('message', (event) => {
