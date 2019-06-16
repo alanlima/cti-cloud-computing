@@ -3,6 +3,9 @@ import { createHook } from 'overmind-react';
 import CoursePayload from './course-unit.json';
 import { unnormalizeCourseJson, normalizeCourseJson } from './utils';
 
+const FETCH_COURSE_URL = 'https://c2d51dfc-1802-45cb-bcc0-51a3737725f5.mock.pstmn.io/courses/advance-diploma-it';
+const COURSE_STORAGE_KEY = 'cti-course-key';
+
 const state = {
     ui: {
         isLoadingCourse: false,
@@ -11,7 +14,7 @@ const state = {
         isProcessingJson: false,
         processJsonError: null
     },
-    course: CoursePayload,
+    course: null,
     outputJson: null,
     tags: [],
     courseTags: state => state.course && state.course.units.reduce((prev, current) => { 
@@ -27,7 +30,25 @@ const state = {
 }
 
 const actions = {
-    updateTag: ({ state }, { tags, unit }) => {
+    init: async ({ state, actions, effects }) => {
+        state.ui.isLoadingCourse = true;
+        try {
+            let course = effects.loadCourseFromStorage();
+
+            if(course) {
+                state.course = course;
+            } else {
+                const course = await effects.fetchCourse();
+                state.course = await normalizeCourseJson(course);
+            }
+        } catch(e) {
+            state.course = CoursePayload;
+            console.error(e);
+        } finally {
+            state.ui.isLoadingCourse = false;
+        }
+    },
+    updateTag: ({ state, actions }, { tags, unit }) => {
         const tagValues = tags.map(t => t.id);
 
         state.tags = [...tagValues];
@@ -38,7 +59,8 @@ const actions = {
             } else {
                 return { ...u, tags: [...state.tags]}
             }
-        })
+        });
+        actions.saveJsonToLocalStorage();
     },
     displaySaveModal: ({state}) => {
         state.ui.showSaveJsonModal = true;
@@ -51,10 +73,10 @@ const actions = {
     uploadCourse: ({ state, actions }, courseContent) => {
         actions.resetJsonProcessState();
         state.ui.isProcessingJson = true;
-        setTimeout(() => {
+        setTimeout(async () => {
             try {
                 const json = JSON.parse(courseContent);
-                state.course = normalizeCourseJson(json);
+                state.course = await normalizeCourseJson(json);
                 state.ui.processJsonResult = 'success';
             } catch (e) {
                 state.ui.processJsonResult = 'fail';
@@ -69,11 +91,21 @@ const actions = {
         state.ui.isProcessingJson = false;
         state.ui.processJsonError = null;
         state.ui.processJsonResult = null;
+    },
+    saveJsonToLocalStorage: ({state}) => {
+        localStorage.setItem(COURSE_STORAGE_KEY, JSON.stringify(state.course));
     }
 }
 
 const effects = {
-
+    fetchCourse: async () => {
+        const resp = await fetch(FETCH_COURSE_URL);
+        return await resp.json();
+    },
+    loadCourseFromStorage: () => {
+        const storeItem = localStorage.getItem(COURSE_STORAGE_KEY);
+        return storeItem && JSON.parse(storeItem);
+    }
 }
 
 export const overmind = createOvermind({

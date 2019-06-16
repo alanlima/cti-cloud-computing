@@ -1,8 +1,16 @@
 import React from 'react';
 import './App.css';
 import CoursePage from './pages/course-page';
+import { useOvermind } from './overmind';
 
 function App() {
+
+  const { actions } = useOvermind();
+
+  React.useEffect(() => {
+    actions.init();
+  }, []);
+
   return (
     <div>
       <div id="nav">

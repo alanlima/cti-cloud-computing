@@ -37,7 +37,7 @@ export const unnormalizeCourseJson = (input) => {
     return output;
 }
 
-export const normalizeCourseJson = (input) => ({
+export const normalizeCourseJson = (input) => new Promise((resolve) => setTimeout(() => resolve({
     name: input.name,
     code: input.code,
     units: input.units.map(u => {
@@ -61,4 +61,4 @@ export const normalizeCourseJson = (input) => ({
             })
         }
     })
-});
+}), 0));

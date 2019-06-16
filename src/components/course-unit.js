@@ -17,12 +17,11 @@ const CourseUnit = ({
     const [ isActive , setActive ] = React.useState(false);
 
     const toggleActive = React.useCallback(() => {
-        console.log('toggle called..');
         setActive(a => !a);
     }, [ setActive ]);
 
     return (
-        <Accordion active={isActive} fluid styled>
+        <Accordion active={isActive.toString()} fluid styled>
             <Accordion.Title onClick={toggleActive}>
                 <Icon name="dropdown" />
                 {`${code} - ${name}`}
@@ -32,13 +31,6 @@ const CourseUnit = ({
                 {elements && elements.map(e => <CourseElement key={e.id} name={e.name} criterias={e.criterias} />)}
             </Accordion.Content>
         </Accordion>
-
-        // <div className="course-unit">
-        //     <h3>{code}</h3>
-        //     <h2>{name}</h2>
-        //     <CourseTags selectedTags={tags} onTagsUpdated={handleTagsUpdated} />
-        //     {elements && elements.map(e => <CourseElement key={e.id} name={e.name} criterias={e.criterias} />)}
-        // </div>
     )
 };
 

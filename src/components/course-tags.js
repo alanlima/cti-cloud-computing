@@ -21,7 +21,7 @@ const initialState = {
 const parseSelectedTagsOrNull = (tags) => (tags && tags.map(text => ({id: text, text }))) || [];
 
 const CourseTags = (props) => {
-    useWhyDidYouUpdate('[course-tags]', props);
+    // useWhyDidYouUpdate('[course-tags]', props);
     const { onTagsUpdated } = props;
     const [ tags, setTags ] = useState(parseSelectedTagsOrNull(props.selectedTags));
 
@@ -30,7 +30,7 @@ const CourseTags = (props) => {
     }, [ setTags, props.selectedTags ] )
 
     const notifyTagsUpdated = useCallback((tags) => {
-        console.log('should notify with', { onTagsUpdated, tags });
+        //console.log('should notify with', { onTagsUpdated, tags });
         onTagsUpdated && onTagsUpdated(tags)
     }, [ onTagsUpdated] );
 
@@ -66,13 +66,9 @@ export const OvermindedCourseTags = ({ unit }) => {
     const stateUnit = state.course.units.filter(u => u.code === unit.code);
 
     const handleTagSelected = useCallback((tags) => {
-        console.log('handle called...');
+        //console.log('handle called...');
         actions.updateTag({ unit, tags })
     }, [ actions, unit ]);
-
-    console.log('overminded', {
-        state
-    })
 
     return <CourseTags
                 tags={state.tags}
