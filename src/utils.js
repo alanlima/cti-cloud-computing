@@ -34,6 +34,30 @@ export const unnormalizeCourseJson = (input) => {
             }
         })
     }
-    console.log('check normalized course', { output });
     return output;
 }
+
+export const normalizeCourseJson = (input) => ({
+    name: input.name,
+    code: input.code,
+    units: input.units.map(u => {
+        return {
+            name: u.name,
+            code: u.code,
+            elements: Object.keys(u.EPC).map(eKey => {
+                const el = u.EPC[eKey];
+                return {
+                    id: eKey,
+                    name: el.name,
+                    criterias: Object.keys(el.pc).map(cKey => {
+                        const criteria = el.pc[cKey];
+                        return {
+                            id: cKey,
+                            name: criteria.text
+                        }
+                    })
+                };
+            })
+        }
+    })
+});

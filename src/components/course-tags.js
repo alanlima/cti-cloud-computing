@@ -26,13 +26,8 @@ const CourseTags = (props) => {
     const [ tags, setTags ] = useState(parseSelectedTagsOrNull(props.selectedTags));
 
     useEffect(() => {
-        console.log('useEffect', {
-            tags, seTags: props.selectedTags
-        })
         setTags(parseSelectedTagsOrNull(props.selectedTags))
     }, [ setTags, props.selectedTags ] )
-
-    console.log('course-tags', { tags, props });
 
     const notifyTagsUpdated = useCallback((tags) => {
         console.log('should notify with', { onTagsUpdated, tags });
@@ -40,9 +35,7 @@ const CourseTags = (props) => {
     }, [ onTagsUpdated] );
 
     const handleDelete = useCallback(index => {
-        console.log('handle delete before', tags);
         const newTags = tags.filter((tag, i) => i !== index);
-        console.log('handle delete after', newTags);
         notifyTagsUpdated(newTags);
     }, [ tags, notifyTagsUpdated ]);
 

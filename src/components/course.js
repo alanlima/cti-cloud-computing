@@ -3,6 +3,7 @@ import CourseUnit from './course-unit';
 import { useOvermind } from '../overmind';
 import { Menu, Icon } from 'semantic-ui-react';
 import DownloadCourseModal from './download-course-modal';
+import UploadCourseModal from './upload-course-modal';
 
 const Course = ({name, code, units}) => {
 
@@ -19,10 +20,11 @@ const Course = ({name, code, units}) => {
             <Menu>
                 <h2 style={{padding: '5px 20px'}}>{code} - {name}</h2>
                 <Menu.Menu position='right'>
-                    <Menu.Item>
+                    <UploadCourseModal modalTrigger={<Menu.Item>
                         <Icon name='upload'></Icon>
                         Upload JSON
-                    </Menu.Item>
+                    </Menu.Item>} />
+                    
                     <DownloadCourseModal
                         modalTrigger={(
                             <Menu.Item>

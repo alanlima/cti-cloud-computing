@@ -1,13 +1,15 @@
 import { createOvermind } from 'overmind';
 import { createHook } from 'overmind-react';
 import CoursePayload from './course-unit.json';
-import { unnormalizeCourseJson } from './utils';
+import { unnormalizeCourseJson, normalizeCourseJson } from './utils';
 
 const state = {
     ui: {
         isLoadingCourse: false,
         isLoadingJson: false,
-        showSaveJsonModal: false
+        showSaveJsonModal: false,
+        isProcessingJson: false,
+        processJsonError: null
     },
     course: CoursePayload,
     outputJson: null,
@@ -45,6 +47,28 @@ const actions = {
             state.outputJson = unnormalizeCourseJson(state.course);
             state.ui.isLoadingJson = false;
         }, 1000);
+    },
+    uploadCourse: ({ state, actions }, courseContent) => {
+        actions.resetJsonProcessError();
+        state.ui.isProcessingJson = true;
+        setTimeout(() => {
+            try {
+                const json = JSON.parse(courseContent);
+                state.course = normalizeCourseJson(json);
+                state.ui.processJsonResult = 'success';
+            } catch (e) {
+                state.ui.processJsonResult = 'fail';
+                state.ui.processJsonError = e.message;
+                console.error(e);
+            } finally {
+                state.ui.isProcessingJson = false;
+            } 
+        }, 1000);
+    },
+    resetJsonProcessError: ({state}) => {
+        state.ui.isProcessingJson = false;
+        state.ui.processJsonError = null;
+        state.ui.processJsonResult = null;
     }
 }
 
