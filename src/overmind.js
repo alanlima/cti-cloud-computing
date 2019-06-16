@@ -46,10 +46,10 @@ const actions = {
         setTimeout(() => {
             state.outputJson = unnormalizeCourseJson(state.course);
             state.ui.isLoadingJson = false;
-        }, 1000);
+        }, 0);
     },
     uploadCourse: ({ state, actions }, courseContent) => {
-        actions.resetJsonProcessError();
+        actions.resetJsonProcessState();
         state.ui.isProcessingJson = true;
         setTimeout(() => {
             try {
@@ -65,7 +65,7 @@ const actions = {
             } 
         }, 1000);
     },
-    resetJsonProcessError: ({state}) => {
+    resetJsonProcessState: ({state}) => {
         state.ui.isProcessingJson = false;
         state.ui.processJsonError = null;
         state.ui.processJsonResult = null;

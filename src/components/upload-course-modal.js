@@ -12,10 +12,6 @@ const UploadCourseModal = ({modalTrigger}) => {
     const modalRef = React.useRef(null);
 
     React.useEffect(() => {
-        actions.resetJsonProcessError();
-    }, []);
-
-    React.useEffect(() => {
         if(state.ui.processJsonResult === 'success') {
             const timeoutId = setTimeout(() => modalRef.current.handleClose(), 2000);
             return () => clearTimeout(timeoutId);
@@ -31,10 +27,15 @@ const UploadCourseModal = ({modalTrigger}) => {
         actions.uploadCourse(courseContent);
     }, [ courseContent, actions ]);
 
+    const handleModalClosed = useCallback(() => {
+        actions.resetJsonProcessState();
+    }, [ actions ]);
+
     return (
         <Modal
             ref={modalRef}
             trigger={modalTrigger}
+            onClose={handleModalClosed}
             closeOnEscape={state.ui.isProcessingJson === false}
             closeOnDimmerClick={state.ui.isProcessingJson === false}>
             <Modal.Header>Course Upload</Modal.Header>

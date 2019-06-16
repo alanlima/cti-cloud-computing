@@ -44,6 +44,7 @@ export const normalizeCourseJson = (input) => ({
         return {
             name: u.name,
             code: u.code,
+            tags: u.tags || [],
             elements: Object.keys(u.EPC).map(eKey => {
                 const el = u.EPC[eKey];
                 return {
