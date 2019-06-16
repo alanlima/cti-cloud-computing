@@ -37,28 +37,34 @@ export const unnormalizeCourseJson = (input) => {
     return output;
 }
 
-export const normalizeCourseJson = (input) => new Promise((resolve) => setTimeout(() => resolve({
-    name: input.name,
-    code: input.code,
-    units: input.units.map(u => {
-        return {
-            name: u.name,
-            code: u.code,
-            tags: u.tags || [],
-            elements: Object.keys(u.EPC).map(eKey => {
-                const el = u.EPC[eKey];
+export const normalizeCourseJson = (input) => new Promise((resolve, reject) => setTimeout(() => {
+    try {
+        resolve({
+            name: input.name,
+            code: input.code,
+            units: input.units.map(u => {
                 return {
-                    id: eKey,
-                    name: el.name,
-                    criterias: Object.keys(el.pc).map(cKey => {
-                        const criteria = el.pc[cKey];
+                    name: u.name,
+                    code: u.code,
+                    tags: u.tags || [],
+                    elements: Object.keys(u.EPC).map(eKey => {
+                        const el = u.EPC[eKey];
                         return {
-                            id: cKey,
-                            name: criteria.text
-                        }
+                            id: eKey,
+                            name: el.name,
+                            criterias: Object.keys(el.pc).map(cKey => {
+                                const criteria = el.pc[cKey];
+                                return {
+                                    id: cKey,
+                                    name: criteria.text
+                                }
+                            })
+                        };
                     })
-                };
+                }
             })
-        }
-    })
-}), 0));
+        });
+    } catch {
+        reject(new Error('Invalid JSON format.'));
+    }
+}, 0));

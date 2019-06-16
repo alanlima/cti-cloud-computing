@@ -20,16 +20,16 @@ const Course = ({name, code, units}) => {
             <Menu>
                 <h2 style={{padding: '5px 20px'}}>{code} - {name}</h2>
                 <Menu.Menu position='right'>
-                    <UploadCourseModal modalTrigger={<Menu.Item>
+                    <UploadCourseModal modalTrigger={<Menu.Item color='violet' active={true}>
                         <Icon name='upload'></Icon>
-                        Upload JSON
+                        <strong>Upload JSON</strong>
                     </Menu.Item>} />
                     
                     <DownloadCourseModal
                         modalTrigger={(
-                            <Menu.Item>
+                            <Menu.Item color='green' active={true}>
                                 <Icon name="download"></Icon>
-                                Download JSON
+                                <strong>Download JSON</strong>
                             </Menu.Item>
                         )}
                     />

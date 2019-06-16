@@ -76,8 +76,13 @@ const actions = {
         setTimeout(async () => {
             try {
                 const json = JSON.parse(courseContent);
-                state.course = await normalizeCourseJson(json);
-                state.ui.processJsonResult = 'success';
+                if(json) {
+                    state.course = await normalizeCourseJson(json);
+                    state.ui.processJsonResult = 'success';
+                } else {
+                    state.ui.processJsonResult = 'fail';
+                    state.ui.processJsonError = 'Be smart and set a proper JSON format 🤪'
+                }
             } catch (e) {
                 state.ui.processJsonResult = 'fail';
                 state.ui.processJsonError = e.message;

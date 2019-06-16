@@ -24,6 +24,9 @@ const UploadCourseModal = ({modalTrigger}) => {
     }, [ setCourseContent ]);
 
     const handleUploadCourse = useCallback(() => {
+        console.log('upload content', {
+            courseContent
+        })
         actions.uploadCourse(courseContent);
     }, [ courseContent, actions ]);
 
@@ -66,7 +69,7 @@ const UploadCourseModal = ({modalTrigger}) => {
                 {state.ui.processJsonResult === 'success' 
                     ? null
                     : (<Button
-                        active={Boolean(courseContent)}
+                        disabled={Boolean(courseContent) === false}
                         positive
                         labelPosition='right'
                         icon='upload'
