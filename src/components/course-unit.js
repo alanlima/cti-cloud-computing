@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CourseElement from './course-element';
 import CourseTags from './course-tags';
-import { Accordion, Icon } from 'semantic-ui-react';
+import { Accordion, Icon, Label } from 'semantic-ui-react';
 
 const CourseUnit = ({ 
     name, 
@@ -25,6 +25,7 @@ const CourseUnit = ({
             <Accordion.Title onClick={toggleActive}>
                 <Icon name="dropdown" />
                 {`${code} - ${name}`}
+                {tags ? tags.map(tag => <Label key={tag}>{tag}</Label>) : null}
             </Accordion.Title>
             <Accordion.Content active={isActive}>
                 <CourseTags selectedTags={tags} onTagsUpdated={handleTagsUpdated} />
