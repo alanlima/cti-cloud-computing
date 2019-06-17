@@ -1,19 +1,44 @@
 import React from 'react';
 import CourseUnit from './course-unit';
 import { useOvermind } from '../overmind';
-import { Menu, Icon } from 'semantic-ui-react';
+import { Menu, Icon, Message, Tab, Segment } from 'semantic-ui-react';
 import DownloadCourseModal from './download-course-modal';
 import UploadCourseModal from './upload-course-modal';
+import UnitsTaggedGroup from './units-tagged-group';
 
-const Course = ({name, code, units}) => {
+const Course = () => {
 
     const { state, actions } = useOvermind();
+
+    const { name, code, units } = state.course || {};
 
     const handleTagsUpdated = React.useCallback((unit, tags) => {
         actions.updateTag({ unit, tags });
     }, [ actions ]);
 
-    const handUpdate = React.useCallback((unit) => (tags) => actions.updateTag({ unit, tags }), [ ]);
+    const handUpdate = React.useCallback((unit) => (tags) => actions.updateTag({ unit, tags }), []);
+
+    if(!state.course) 
+    {
+        return (<Message color='yellow'><Icon name='warning'></Icon>No course uploaded...</Message>);
+    }
+
+    const panes = [
+        { 
+            menuItem: { key: 'course-units', icon: 'list', content: 'Units' },
+            render: () => (<Tab.Pane>{units.map(u => <CourseUnit
+                onTagsUpdated={handUpdate(u)}
+                tags={u.tags}
+                name={u.name} 
+                code={u.code} 
+                key={u.code} 
+                elements={u.elements} />)}</Tab.Pane>)
+        },
+        {
+            menuItem: { key: 'course-group', icon: 'sitemap', content: 'Units Grouped by Tag'},
+            render: () => <Tab.Pane><UnitsTaggedGroup /></Tab.Pane>
+        }
+    ]
 
     return (
         <div>
@@ -36,13 +61,7 @@ const Course = ({name, code, units}) => {
                 </Menu.Menu>
             </Menu>
 
-            {units.map(u => <CourseUnit
-                onTagsUpdated={handUpdate(u)}
-                tags={u.tags}
-                name={u.name} 
-                code={u.code} 
-                key={u.code} 
-                elements={u.elements} />)}
+            <Tab panes={panes} />
         </div>
     );
 }

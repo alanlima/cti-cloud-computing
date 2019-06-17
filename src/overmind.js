@@ -17,16 +17,7 @@ const state = {
     course: null,
     outputJson: null,
     tags: [],
-    courseTags: state => state.course && state.course.units.reduce((prev, current) => { 
-        const unitName = current.name;
-        return {
-            ...prev,
-            [current.tag]: {
-                ...prev[current.tag],
-                unitName
-            }
-        };
-    }, {})
+    courseTags: null
 }
 
 const actions = {
@@ -99,6 +90,35 @@ const actions = {
     },
     saveJsonToLocalStorage: ({state}) => {
         localStorage.setItem(COURSE_STORAGE_KEY, JSON.stringify(state.course));
+    },
+    refreshCourseTags: ({state}) => {
+        if(!state.course) return;
+
+        state.ui.isLoadingCourse = true;
+        setTimeout(() => {
+            try {
+                state.courseTags = state.course.units.reduce((prev, current) => { 
+                    const unitName = current.name;
+    
+                    for(let tag of current.tags || []) {
+                        prev = {
+                            ...prev,
+                            [tag]: [
+                                ...(prev[tag] || []),
+                                ...[unitName]
+                            ]
+                        }
+                    }
+                    return prev;
+                }, {});
+
+                console.log('check course tags', {
+                    check: state.courseTags
+                })
+            } 
+            catch(e) { console.error(e) }
+            finally { state.ui.isLoadingCourse = false; }
+        }, 0);
     }
 }
 
