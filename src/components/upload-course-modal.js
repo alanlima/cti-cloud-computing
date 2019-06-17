@@ -24,9 +24,6 @@ const UploadCourseModal = ({modalTrigger}) => {
     }, [ setCourseContent ]);
 
     const handleUploadCourse = useCallback(() => {
-        console.log('upload content', {
-            courseContent
-        })
         actions.uploadCourse(courseContent);
     }, [ courseContent, actions ]);
 

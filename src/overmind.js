@@ -111,10 +111,6 @@ const actions = {
                     }
                     return prev;
                 }, {});
-
-                console.log('check course tags', {
-                    check: state.courseTags
-                })
             } 
             catch(e) { console.error(e) }
             finally { state.ui.isLoadingCourse = false; }
