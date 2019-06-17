@@ -1,10 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import Select from 'react-select/creatable';
 import { useOvermind } from '../overmind';
 
 import { WithContext as ReactTags } from 'react-tag-input';
-
-import useWhyDidYouUpdate from '../hooks/useWhyDidYouUpdate';
 
 const KeyCodes = {
     comma: 188,
@@ -12,11 +9,6 @@ const KeyCodes = {
   };
   
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
-
-const initialState = {
-    tags: [],
-    suggestions: []
-}
 
 const parseSelectedTagsOrNull = (tags) => (tags && tags.map(text => ({id: text, text }))) || [];
 

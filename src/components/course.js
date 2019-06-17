@@ -1,20 +1,11 @@
 import React from 'react';
 import CourseUnit from './course-unit';
 import { useOvermind } from '../overmind';
-import { Menu, Icon, Message, Tab, Segment } from 'semantic-ui-react';
+import { Menu, Icon, Message, Tab } from 'semantic-ui-react';
 import DownloadCourseModal from './download-course-modal';
 import UploadCourseModal from './upload-course-modal';
 import UnitsTaggedGroup from './units-tagged-group';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
-const getListStyle = (isDraggingOver, overflow) => ({
-    background: isDraggingOver ? 'lightblue' : 'grey',
-    padding: 8,
-    border: '5px solid pink',
-    width: 250,
-    maxHeight: '50vh',
-    overflow,
-});
 
 const CourseUnits = ({units, onTagsUpdated}) => {
 
@@ -54,18 +45,14 @@ const Course = () => {
 
     const { name, code, units } = state.course || {};
 
-    const handleTagsUpdated = React.useCallback((unit, tags) => {
-        actions.updateTag({ unit, tags });
-    }, [ actions ]);
-
-    const handUpdate = React.useCallback((unit) => (tags) => actions.updateTag({ unit, tags }), []);
+    const handleTagsUpdated = React.useCallback((unit) => (tags) => actions.updateTag({ unit, tags }), [ actions ]);
 
     const handleDragEnd = React.useCallback((result) => {
         if(!result.destination) {
             return;
         }
 
-        console.log('onDragEnd', { result });
+        // console.log('onDragEnd', { result });
 
         actions.reorderCourse({
             sourceIndex: result.source.index,
@@ -83,7 +70,7 @@ const Course = () => {
             menuItem: { key: 'course-units', icon: 'list', content: 'Units' },
             render: () => (<Tab.Pane>
                 <DragDropContext onDragEnd={handleDragEnd}>
-                    <CourseUnits units={units} onTagsUpdated={handUpdate} />
+                    <CourseUnits units={units} onTagsUpdated={handleTagsUpdated} />
                 </DragDropContext>
             </Tab.Pane>)
         },

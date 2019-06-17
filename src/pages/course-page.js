@@ -3,8 +3,8 @@ import Course from '../components/course';
 import {useOvermind} from '../overmind';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-const Page = ({}) => {
-    const { state, actions } = useOvermind();
+const Page = () => {
+    const { state } = useOvermind();
 
     return (
         <div>

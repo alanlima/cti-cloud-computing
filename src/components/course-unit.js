@@ -12,7 +12,7 @@ const CourseUnit = ({
     onTagsUpdated
 }) =>
 {
-    const handleTagsUpdated = React.useCallback((tags) => onTagsUpdated(tags), [ ]);
+    const handleTagsUpdated = React.useCallback((tags) => onTagsUpdated(tags), [ onTagsUpdated ]);
 
     const [ isActive , setActive ] = React.useState(false);
 
