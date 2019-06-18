@@ -5,7 +5,7 @@ import { Menu, Icon, Message, Tab } from 'semantic-ui-react';
 import DownloadCourseModal from './download-course-modal';
 import UploadCourseModal from './upload-course-modal';
 import UnitsTaggedGroup from './units-tagged-group';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const CourseUnits = ({units, onTagsUpdated}) => {
 
@@ -15,23 +15,14 @@ const CourseUnits = ({units, onTagsUpdated}) => {
             >
                 {(droppableProvided, droppableSnapshot) => {
                     return (<div ref={droppableProvided.innerRef}>
-                        {units.map((u, index) => (<Draggable
-                                key={u.code} 
-                                draggableId={u.code}
-                                index={index}>
-                                {(draggableProvided, draggableSnapshot) => (
-                                    <div ref={draggableProvided.innerRef}
-                                        {...draggableProvided.draggableProps}
-                                        {...draggableProvided.dragHandleProps}>
-                                        <CourseUnit
+                        {units.map((u, index) => (<CourseUnit
+                                            key={u.code}
                                             onTagsUpdated={onTagsUpdated(u)}
                                             tags={u.tags}
                                             name={u.name} 
                                             code={u.code} 
-                                            elements={u.elements} />
-                                    </div>
-                                )}
-                        </Draggable>))}
+                                            index={index}
+                                            elements={u.elements} />))}
                         {droppableProvided.placeholder}
                     </div>)
                 }}
