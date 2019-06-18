@@ -116,11 +116,12 @@ const actions = {
             finally { state.ui.isLoadingCourse = false; }
         }, 0);
     },
-    reorderCourse: ({state}, {sourceIndex, destinationIndex}) => {
+    reorderCourse: ({state, actions}, {sourceIndex, destinationIndex}) => {
         const result = [...state.course.units];
         const [ removed ] = result.splice(sourceIndex, 1);
         result.splice(destinationIndex, 0, removed);
         state.course.units = result;
+        actions.saveJsonToLocalStorage();
     }
 }
 
