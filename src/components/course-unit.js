@@ -34,6 +34,7 @@ const CourseUnit = ({
                         fluid 
                         styled>
                         <Accordion.Title 
+                            className='disable-selection'
                             onClick={toggleActive}>
                             <Icon name="exchange"
                                 flipped='horizontally'
